@@ -17,6 +17,8 @@ package main
 
 import (
 	"fmt"
+	"os"
+	"strconv"
 )
 
 type Rettangolo struct {
@@ -42,6 +44,13 @@ func (r Rettangolo) String() string {
 func main() {
 
 	var r Rettangolo
-	fmt.Scan(&r.base, &r.altezza)
+	args := os.Args[1:]
+
+	base, _ := strconv.Atoi(args[0])
+
+	height, _ := strconv.Atoi(args[1])
+
+	r.base = base
+	r.altezza = height
 	fmt.Println(r.String())
 }
