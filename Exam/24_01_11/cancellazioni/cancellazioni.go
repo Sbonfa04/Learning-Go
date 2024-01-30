@@ -1,3 +1,55 @@
+/*
+Cancellazioni
+=============
+
+Scrivere un programma 'cancellazioni.go' dotato di:
+
+- una funzione
+
+ 	func cancella(lista []string) []string
+
+  che, per ogni numero n >0 (intero) presente in lista,
+  cancella il numero stesso e gli n elementi successivi della lista
+  (o quelli che ci sono per arrivare alla fine della lista)
+  e restituisce la nuova lista così prodotta;
+
+- una funzione main() che legge da file (il cui nome viene passato
+  come parametro su linea di comando) un testo di parole (sequenze di caratteri separate da whitespace),
+  tra cui anche numeri interi non negativi, stampa la lista delle parole lette e poi
+  la nuova lista ottenuta cancellando, per ogni numero n presente nella lista originale,
+  il numero stesso e gli n elementi successivi (vedi sopra).
+
+Se il programma viene lanciato con un numero di argomenti diverso da 1,
+deve terminare stampando "Fornire 1 nome di file".
+Se invece il file non esiste, il programma deve terminare stampando "File non accessibile".
+
+Il file può contenere un numero arbitrario di parole e numeri, disposti su un numero arbitrario di righe di testo, senza vincoli sul numero e tipo di caratteri whitespace che separano parole e numeri e sul numero di cifre di cui sono composti i numeri.
+
+Si può assumere che il file non contenga numeri negativi, non occorre fare questo controllo.
+
+Esempi di esecuzione
+--------------------
+
+$ ./cancellazioni uno.input
+[uno due 2 tre quattro cinque 1 sei sette 5 otto nove dieci]
+[uno due cinque sette]
+
+$ ./cancellazioni due.input
+[uno due 2 tre quattro cinque 1 sei sette 1 otto nove dieci]
+[uno due cinque sette nove dieci]
+
+$ ./cancellazioni quattro.input
+[uno 10 due tre quattro cinque sei sette otto nove dieci undici dodici]
+[uno dodici]
+
+$ ./cancellazioni
+Fornire 1 nome di file
+
+$ ./cancellazioni  FileNonEsistente.txt
+File non accessibile
+
+*/
+
 package main
 
 import (
@@ -8,39 +60,34 @@ import (
 )
 
 func cancella(lista []string) []string {
-	var lista2 []string
-
+	var nuova []string
 	for i := 0; i < len(lista); i++ {
-		n, err := strconv.Atoi(lista[i])
-		if err != nil {
-			lista2 = append(lista2, lista[i])
+		num, err := strconv.Atoi(lista[i])
+		if err != nil || num < 0 {
+			nuova = append(nuova, lista[i])
 		} else {
-			if (i + n + 1) >= len(lista) {
-				return lista2
-			}
+			i += num
 		}
 	}
-	return lista2
-
+	return nuova
 }
 
 func main() {
-	var lista []string
-
-	if len(os.Args) != 2 {
+	if len(os.Args) < 2 {
 		fmt.Println("Fornire 1 nome di file")
 	} else {
-		_, err := os.Open(os.Args[1])
+		file := os.Args[1]
+		f, err := os.Open(file)
 		if err != nil {
 			fmt.Println("File non accessibile")
 		} else {
-			scanner := bufio.NewScanner(os.Stdin)
+			var lista []string
+			scanner := bufio.NewScanner(f)
 			scanner.Split(bufio.ScanWords)
 			for scanner.Scan() {
 				parola := scanner.Text()
 				lista = append(lista, parola)
 			}
-
 			fmt.Println(lista)
 			fmt.Println(cancella(lista))
 		}

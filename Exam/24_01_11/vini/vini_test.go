@@ -83,7 +83,7 @@ func TestCreaBottiglia(t *testing.T) {
 	if b.nome != "Dom Perignon" {
 		t.FailNow()
 	}
-	if !intorno(b.gradi, 12.5) {
+	if !intorno(float64(b.gradi), 12.5) {
 		t.FailNow()
 	}
 	//fmt.Println(b)
@@ -122,7 +122,7 @@ func TestCreaBottigliaRiga(t *testing.T) {
 	if b.nome != "Verdicchio" {
 		t.FailNow()
 	}
-	if !intorno(b.gradi, 11.0) {
+	if !intorno(float64(b.gradi), 11.0) {
 		t.FailNow()
 	}
 	if b.anno != 2020 {

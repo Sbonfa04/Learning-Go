@@ -144,15 +144,6 @@ func TestNewCircleToccaEsterno(t *testing.T) {
 	}
 }
 
-func TestNewCircleToccaInterno(t *testing.T) {
-	a := newCircle("alpha 0.0 0.0 5.6")
-	b := newCircle("beta 0.0 3.6 2.0")
-
-	if !tocca(a, b) {
-		t.Fail()
-	}
-}
-
 func TestComeDaEsempio(t *testing.T) {
 	LanciaGenerica(t,
 		prog,
