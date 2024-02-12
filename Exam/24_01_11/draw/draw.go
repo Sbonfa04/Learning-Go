@@ -56,35 +56,43 @@ import (
 )
 
 func DrawPoint(c byte, k int) string {
-	var s string
+	var point string
 	for i := 0; i < k; i++ {
-		s += " "
+		point += " "
 	}
-	s += string(c)
-	return s
+	point += string(c)
+	return point
 }
 
 func DrawSegment(c byte, k, l int) string {
-	var s string
+	var segment string
 	for i := 0; i < k; i++ {
-		s += " "
+		segment += " "
 	}
-	for i := 0; i < l; i++ {
-		s += string(c)
+	for j := 0; j < l; j++ {
+		segment += string(c)
 	}
-	return s
+	return segment
 }
 
 func main() {
-	l, _ := strconv.Atoi(os.Args[1])
-	n, _ := strconv.Atoi(os.Args[2])
-	c := os.Args[3][0]
+	var c byte
+	var n, l, k int
 
-	if l > 0 && n > 0 {
-		for i := 0; i < n; i++ {
-			fmt.Println(DrawSegment(c, i*(l-1), l))
-			for j := 1; j < l; j++ {
-				fmt.Println(DrawPoint(c, l+i*(l-1)-1))
+	if len(os.Args) < 4 {
+		return
+	} else {
+		l, _ = strconv.Atoi(os.Args[1])
+		n, _ = strconv.Atoi(os.Args[2])
+		c = os.Args[3][0]
+
+		if l > 0 && n > 0 {
+			for i := 0; i < n; i++ {
+				fmt.Println(DrawSegment(c, k, l))
+				k += l - 1
+				for j := 0; j < l-1; j++ {
+					fmt.Println(DrawPoint(c, k))
+				}
 			}
 		}
 	}

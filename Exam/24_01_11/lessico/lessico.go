@@ -98,28 +98,25 @@ func stampa(m map[string][]int) {
 }
 
 func main() {
-	fmt.Print("+ (memorizza)\n? (indica n. di riga)\np (stampa tutto)\n")
-	scanner := bufio.NewScanner(os.Stdin)
-	m := make(map[string][]int)
-	var nRiga int = 1
-	for scanner.Scan() {
-		riga := scanner.Text()
-		rigaSep := strings.Split(riga, " ")
+	mappa := make(map[string][]int)
 
-		if rigaSep[0] == "+" {
-			// memorizza
-			for _, parola := range rigaSep[1:] {
-				m[parola] = append(m[parola], nRiga)
-			}
-			nRiga++
-		} else if rigaSep[0] == "?" {
-			// indica n. di riga
-			parola := rigaSep[1]
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Println("+ (memorizza)")
+	fmt.Println("? (indica n. di riga)")
+	fmt.Println("p (stampa tutto)")
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "p" {
+			stampa(mappa)
+		} else if line[0] == '?' {
+			parola := line[2:]
 			fmt.Printf("stringa: %s\n", parola)
-			fmt.Printf("righe: %v\n", m[parola])
-		} else if rigaSep[0] == "p" {
-			// stampa tutto
-			stampa(m)
+			fmt.Printf("righe: %v\n", mappa[parola])
+		} else {
+			parole := strings.Fields(line[2:])
+			for _, parola := range parole {
+				mappa[parola] = append(mappa[parola], len(mappa)+1)
+			}
 		}
 	}
 }

@@ -1,5 +1,3 @@
-w
-
 package main
 
 import (

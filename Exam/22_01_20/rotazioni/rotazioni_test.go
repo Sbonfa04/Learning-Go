@@ -20,7 +20,8 @@ Il programma dovrà essere dotato di:
   restituisce il rettangolo corrispondente (vedi definizione di Rectangle), cioè in cui i due campi
   sono il vertice in basso a sinistra e quello il alto a destra (indicati con P1 e P3 nella figura sotto)
 
-Nota: indipendentemente dai valori delle coordinate di due vertici opposti di un rettangolo (P1 e P3 o P2 e P4), P1 è dato da (min(x1,y1), min(y1,y2) e P3 da (max(x1,x1), max(y1,y2)
+Nota: indipendentemente dai valori delle coordinate di due vertici opposti di un rettangolo
+ (P1 e P3 o P2 e P4), P1 è dato da (min(x1,y1), min(y1,y2) e P3 da (max(x1,x1), max(y1,y2)
 
               P4 _____________ P3
                 |             |

@@ -60,36 +60,35 @@ import (
 )
 
 func cancella(lista []string) []string {
-	var nuova []string
+	var newLista []string
 	for i := 0; i < len(lista); i++ {
 		num, err := strconv.Atoi(lista[i])
-		if err != nil || num < 0 {
-			nuova = append(nuova, lista[i])
+		if err != nil {
+			newLista = append(newLista, lista[i])
 		} else {
 			i += num
 		}
 	}
-	return nuova
+	return newLista
 }
 
 func main() {
+	var lista []string
 	if len(os.Args) < 2 {
 		fmt.Println("Fornire 1 nome di file")
 	} else {
-		file := os.Args[1]
-		f, err := os.Open(file)
+		f := os.Args[1]
+		file, err := os.Open(f)
 		if err != nil {
 			fmt.Println("File non accessibile")
-		} else {
-			var lista []string
-			scanner := bufio.NewScanner(f)
-			scanner.Split(bufio.ScanWords)
-			for scanner.Scan() {
-				parola := scanner.Text()
-				lista = append(lista, parola)
-			}
-			fmt.Println(lista)
-			fmt.Println(cancella(lista))
+			return
 		}
+		scanner := bufio.NewScanner(file)
+		scanner.Split(bufio.ScanWords)
+		for scanner.Scan() {
+			lista = append(lista, scanner.Text())
+		}
+		fmt.Println(lista)
+		fmt.Println(cancella(lista))
 	}
 }

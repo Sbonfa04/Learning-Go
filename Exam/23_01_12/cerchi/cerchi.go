@@ -66,8 +66,12 @@ le altre sono l'output del programma)
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"math"
+	"os"
+	"strconv"
+	"strings"
 )
 
 type Cerchio struct {
@@ -76,32 +80,25 @@ type Cerchio struct {
 }
 
 func newCircle(descr string) Cerchio {
-	var c Cerchio
-	fmt.Sscan(descr, &c.nome, &c.x, &c.y, &c.raggio)
-	return c
+	descrizione := strings.Split(descr, " ")
+	nome := descrizione[0]
+	x, _ := strconv.ParseFloat(descrizione[1], 64)
+	y, _ := strconv.ParseFloat(descrizione[2], 64)
+	raggio, _ := strconv.ParseFloat(descrizione[3], 64)
+	return Cerchio{nome, x, y, raggio}
 }
 
 func distanzaPunti(x1, y1, x2, y2 float64) float64 {
-	distanza := math.Sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))
+	distanza := math.Sqrt(((x1 - x2) * (x1 - x2)) + ((y1 - y2) * (y1 - y2)))
 	return distanza
 }
 
 func tocca(cerc1, cerc2 Cerchio) bool {
-	distanzaCentri := distanzaPunti(cerc1.x, cerc1.y, cerc2.x, cerc2.y)
-	sommaRaggi := cerc1.raggio + cerc2.raggio
-	differenzaRaggi := math.Abs(cerc1.raggio - cerc2.raggio)
-
-	// Check if the circles are externally tangent
-	if math.Abs(distanzaCentri-sommaRaggi) < 1e-6 {
+	if distanzaPunti(cerc1.x, cerc1.y, cerc2.x, cerc2.y)*1e-6 <= (cerc1.raggio+cerc2.raggio)*1e-6 {
 		return true
+	} else {
+		return false
 	}
-
-	// Check if one circle is inside the other and touching the border
-	if distanzaCentri+math.Min(cerc1.raggio, cerc2.raggio)-differenzaRaggi < 1e-6 {
-		return true
-	}
-
-	return false
 }
 
 func maggiore(cerc1, cerc2 Cerchio) bool {
@@ -113,36 +110,40 @@ func maggiore(cerc1, cerc2 Cerchio) bool {
 }
 
 func main() {
-	var c1, c2 Cerchio
-	var descr string
-	var primo bool = true
+	var k = 0
 
-	c1 = newCircle("zero 0 0 0")
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Split(bufio.ScanLines)
 
-	for {
-		fmt.Scan(&descr)
-		if descr == "" {
-			break
+	for scanner.Scan() {
+		riga := scanner.Text()
+
+		var descrizioneZero string
+
+		if k == 0 {
+			descrizioneZero = "zero 0 0 0"
 		}
-		c2 = newCircle(descr)
-		if c2.nome == "" {
-			break
-		}
-		if primo {
-			fmt.Print(c2, " non tangente, maggiore")
-			primo = false
+
+		descrizione := strings.Join(strings.Split(string(riga), " "), " ")
+
+		fmt.Print(newCircle(descrizione))
+
+		if tocca(newCircle(descrizioneZero), newCircle(descrizione)) {
+			fmt.Print(" tangente, ")
 		} else {
-			if tocca(c1, c2) {
-				fmt.Print(c2, " tangente, ")
-			} else {
-				fmt.Print(c2, " non tangente, ")
-			}
-			if maggiore(c1, c2) {
-				fmt.Println("maggiore")
-			} else {
-				fmt.Println("minore o uguale")
-			}
+			fmt.Print(" non tangente, ")
 		}
-		c1 = c2
+
+		if maggiore(newCircle(descrizione), newCircle(descrizioneZero)) {
+			fmt.Print("maggiore")
+		} else {
+			fmt.Print("minore o uguale")
+		}
+
+		fmt.Println()
+
+		descrizioneZero = descrizione
+		k++
+
 	}
 }
