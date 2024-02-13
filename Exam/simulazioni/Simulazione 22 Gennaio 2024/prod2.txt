@@ -1,0 +1,9 @@
+123;computer;200
+500;mouse;198
+2;keyboard;37
+15;speaker;34
+99;webcam;0
+123;computer;-159
+123;computer;-46
+2;keyboard;-4
+22;charger;12
